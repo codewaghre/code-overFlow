@@ -21,7 +21,6 @@ const AllAnswers = async({userId, questionId, totalAnswers }: Props) => {
 
     const result = await getAnswers({
         questionId,
-       
     })
     return (
         <div className="mt-11">

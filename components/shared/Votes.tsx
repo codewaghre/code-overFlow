@@ -2,11 +2,13 @@
 "use client"
 
 import { downvoteAnswer, upvoteAnswer } from '@/lib/actions/answer.action';
+import { viewQuestion } from '@/lib/actions/interaction.action';
 import { downvoteQuestion, upvoteQuestion } from '@/lib/actions/question.action';
+import { toggleSaveQuestion } from '@/lib/actions/users.action';
 import { formatAndDivideNumber } from '@/lib/utils';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import React from 'react'
+import { usePathname, useRouter } from "next/navigation";
+import React, { useEffect } from 'react'
 
 
 interface Props {
@@ -34,11 +36,26 @@ const Votes = ({
 
 
     const pathname = usePathname()
+    const router = useRouter()
 
-    const handleSave = () => { }
+    const handleSave = async () => {
+        await toggleSaveQuestion({
+            userId: JSON.parse(userId),
+            questionId: JSON.parse(itemId),
+            path: pathname,
+        })
+
+        return console.log("saved");
 
 
-    const handleVote = async(action: string) => {
+        // return toast({
+        //     title: `Question ${!hasSaved ? 'Saved in' : 'Removed from'} your collection`,
+        //     variant: !hasSaved ? 'default' : 'destructive'
+        // })
+    }
+
+
+    const handleVote = async (action: string) => {
 
         if (!userId) {
             return console.log("please log in first");
@@ -95,14 +112,17 @@ const Votes = ({
             // })
 
         }
-
-
     }
+
+    useEffect(() => {
+        viewQuestion({
+            questionId: JSON.parse(itemId),
+            userId: userId ? JSON.parse(userId) : undefined,
+        })
+    }, [itemId, userId, pathname, router]);
 
 
     return (
-
-
         <div className="flex gap-5">
             <div className="flex-center gap-2.5">
                 <div className="flex-center gap-1.5">
