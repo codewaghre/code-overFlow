@@ -9,6 +9,7 @@ import { formatAndDivideNumber, getTimestamp } from '@/lib/utils';
 import ParseHTML from '@/components/shared/ParseHTML';
 import RenderTag from '@/components/shared/RenderTag';
 import Answer from '@/components/form/Answer';
+import AllAnswers from '@/components/shared/AllAnswers';
 
 
 
@@ -19,9 +20,9 @@ const page = async ({ params }: any) => {
     const { userId } = session;
 
 
-
+    let mongoUser
     if (userId) {
-        let mongoUser = await getUserByID({ userId })
+        mongoUser = await getUserByID({ userId })
     }
 
     const result = await getQuestionById({ questionId: params.id });
@@ -101,8 +102,19 @@ const page = async ({ params }: any) => {
                 ))}
             </div>
 
+            <AllAnswers
+                questionId={result._id}
+                userId={mongoUser._id}
+                totalAnswers={result.answers.length}
+                // page={searchParams?.page}
+                // filter={searchParams?.filter}
+            />
 
-            <Answer/>
+            <Answer
+                question={result.content}
+                questionId={JSON.stringify(result._id)}
+                authorId={JSON.stringify(mongoUser._id)}
+            />
 
         </>
 

@@ -12,13 +12,20 @@ import { usePathname } from 'next/navigation'
 import { useTheme } from '@/context/themeContext'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { createAnswer } from '@/lib/actions/answer.action'
+
+interface Props {
+  question?: string;
+  questionId: string;
+  authorId: string;
+}
 
 
-const Answer = () => {
+const Answer = ({ questionId, authorId}: Props) => {
 
     const pathname = usePathname();
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isSubmittingAI, setSetIsSubmittingAI] = useState(false);
+    const [isSubmittingAI] = useState(false);
     const { mode } = useTheme();
     const editorRef = useRef(null)
 
@@ -32,7 +39,20 @@ const Answer = () => {
     const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
 
         setIsSubmitting(true);
+        await createAnswer({
+            content: values.answer,
+            author: JSON.parse(authorId),
+            question: JSON.parse(questionId),
+            path: pathname,
+        });
 
+        form.reset();
+
+        if (editorRef.current) {
+            const editor = editorRef.current as any;
+
+            editor.setContent('');
+        }
         try {
 
         } catch (error) {
@@ -50,25 +70,25 @@ const Answer = () => {
                     <h4 className="paragraph-semibold text-dark400_light800">Write your answer here</h4>
 
                     <Button className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
-                    
-                >
-                    {isSubmittingAI ? (
-                        <>
-                            Generating...
-                        </>
-                    ) : (
-                        <>
-                            <Image
-                                src="/assets/icons/stars.svg"
-                                alt="star"
-                                width={12}
-                                height={12}
-                                className="object-contain"
-                            />
-                            Generate AI Answer
-                        </>
-                    )}
-                </Button>
+
+                    >
+                        {isSubmittingAI ? (
+                            <>
+                                Generating...
+                            </>
+                        ) : (
+                            <>
+                                <Image
+                                    src="/assets/icons/stars.svg"
+                                    alt="star"
+                                    width={12}
+                                    height={12}
+                                    className="object-contain"
+                                />
+                                Generate AI Answer
+                            </>
+                        )}
+                    </Button>
 
 
                 </div>
@@ -86,7 +106,7 @@ const Answer = () => {
                                         <Editor
                                             apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
                                             onInit={(evt, editor) => {
-                                                // @ts-ignore
+                                                
                                                 editorRef.current = editor
                                             }}
                                             onBlur={field.onBlur}
