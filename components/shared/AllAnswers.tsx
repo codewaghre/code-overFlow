@@ -4,6 +4,9 @@ import ParseHTML from './ParseHTML';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getTimestamp } from '@/lib/utils';
+import { AnswerFilters } from '@/constants/filters';
+import Filter from './Filter';
+import Votes from './Votes';
 
 interface Props {
     questionId: string;
@@ -14,7 +17,7 @@ interface Props {
 }
 
 
-const AllAnswers = async({ questionId, totalAnswers }: Props) => {
+const AllAnswers = async({userId, questionId, totalAnswers }: Props) => {
 
     const result = await getAnswers({
         questionId,
@@ -25,7 +28,7 @@ const AllAnswers = async({ questionId, totalAnswers }: Props) => {
       <div className='flex items-center justify-between'>
         <h3 className='primary-text-gradient'>{totalAnswers} Answers</h3>
 
-        {/* <Filter filters={AnswerFilters} /> */}
+        <Filter filters={AnswerFilters} />
       </div>
 
       <div>
@@ -52,7 +55,7 @@ const AllAnswers = async({ questionId, totalAnswers }: Props) => {
                   </div>
                 </Link>
                 <div className="flex justify-end">
-                  {/* <Votes 
+                  <Votes
                     type="Answer"
                     itemId={JSON.stringify(answer._id)}
                     userId={JSON.stringify(userId)}
@@ -60,8 +63,8 @@ const AllAnswers = async({ questionId, totalAnswers }: Props) => {
                     hasupVoted={answer.upvotes.includes(userId)}
                     downvotes={answer.downvotes.length}
                     hasdownVoted={answer.downvotes.includes(userId)}
-                  /> */}
-                        Votes
+                  />
+                        
                 </div>
 
             </div>
