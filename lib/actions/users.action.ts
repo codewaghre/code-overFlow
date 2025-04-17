@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use server"
 
 import User from "@/database/user.model"
 import { connectToDatabase } from "../mongoose"
-import { CreateUserParams, UpdateUserParams, DeleteUserParams } from "./shared.types"
+import { CreateUserParams, UpdateUserParams, DeleteUserParams, GetAllUsersParams } from "./shared.types"
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
@@ -54,7 +55,6 @@ export async function updateUser(params: UpdateUserParams) {
   }
 }
 
-
 export async function deleteUser(params: DeleteUserParams) {
   try {
     await connectToDatabase();
@@ -84,5 +84,22 @@ export async function deleteUser(params: DeleteUserParams) {
   } catch (error) {
     console.log(error);
     throw error;
+  }
+}
+
+
+export async function getAllUsers() {
+  
+  try {
+    connectToDatabase()
+
+
+    const users = await User.find({}).sort({ createdAt: -1 })
+    
+    return {users}
+
+  } catch (error) {
+    console.log(error);
+    
   }
 }
