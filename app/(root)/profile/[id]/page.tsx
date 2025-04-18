@@ -12,20 +12,35 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
-import { URLProps } from '@/types';
+// import { URLProps } from '@/types';
+import { notFound } from 'next/navigation';
+
+// Add this export to ensure dynamic rendering
+export const dynamic = 'force-dynamic';
 
 
+type Props = {
+    params: { id: string };
+    searchParams: { [key: string]: string | undefined };
+};
 
 
-const Page = async({ params, searchParams }: URLProps) => {
+const Page = async ({ params, searchParams }: Props) => {
 
+    // First get the ID from params
+    const { id } = params;
+
+    // Then authenticate
     const { userId } = await auth();
-    if (!userId) return console.log("NNOOooo User ID");
-    
-    const {id} = await params
-    const userInfo = await getUserInfo({ userId: id })
+    if (!userId) {
+        return notFound(); // or redirect to sign-in
+    }
 
-    if (!userInfo) return <div>User not found.</div>
+    // Fetch user info
+    const userInfo = await getUserInfo({ userId: id });
+    if (!userInfo) {
+        return notFound();
+    }
 
 
     return (
