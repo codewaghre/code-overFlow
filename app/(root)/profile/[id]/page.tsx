@@ -21,12 +21,13 @@ type PageProps = {
 
 const Page = async({ params, searchParams}: PageProps) => {
 
+    const userInfo = await getUserInfo({ userId: params.id })
     const session = await auth();
     const { userId } = session;
 
     if (!userId) return null
 
-    const userInfo = await getUserInfo({ userId: params.id })
+    
     return (
         <>
             <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
