@@ -15,8 +15,7 @@ import AnswersTab from '@/components/shared/AnswersTab';
 import { URLProps } from '@/types';
 
 
-// 👇 Ensure Vercel doesn't pre-render this page
-export const dynamic = "force-dynamic"
+
 
 const Page = async ({ params, searchParams }: URLProps) => {
 
@@ -25,6 +24,9 @@ const Page = async ({ params, searchParams }: URLProps) => {
     if (!userId) return null
 
     const userInfo = await getUserInfo({ userId: params?.id })
+
+    console.log(params.id);
+    
 
     if (!userInfo) return <div>User not found.</div>
 
