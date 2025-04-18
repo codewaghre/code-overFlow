@@ -14,12 +14,12 @@ import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
 
-type PageProps = {
+type Props = {
   params: { id: string };
   searchParams: { [key: string]: string | undefined };
 };
 
-const Page = async({ params, searchParams}: PageProps) => {
+const Page = async({ params, searchParams}: Props) => {
 
     const userInfo = await getUserInfo({ userId: params.id })
     const session = await auth();
@@ -27,7 +27,6 @@ const Page = async({ params, searchParams}: PageProps) => {
 
     if (!userId) return null
 
-    
     return (
         <>
             <div className="flex flex-col-reverse items-start justify-between sm:flex-row">
