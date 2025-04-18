@@ -17,16 +17,13 @@ import { URLProps } from '@/types';
 
 
 
-const Page = async ({ params, searchParams }: URLProps) => {
+const Page = async({ params, searchParams }: URLProps) => {
 
     const { userId } = await auth();
-
-    if (!userId) return null
-
-    const userInfo = await getUserInfo({ userId: params?.id })
-
-    console.log(params.id);
+    if (!userId) return console.log("NNOOooo User ID");
     
+    const {id} = await params
+    const userInfo = await getUserInfo({ userId: id })
 
     if (!userInfo) return <div>User not found.</div>
 
