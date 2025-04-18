@@ -8,10 +8,10 @@ interface Props extends SearchParamsProps {
   clerkId?: string | null;
 }
 
-const AnswersTab = async ({ searchParams, userId, clerkId }: Props) => {
+const AnswersTab = async ({  userId, clerkId }: Props) => {
   const result = await getUserAnswers({
     userId,
-    page: searchParams.page ? +searchParams.page : 1,
+    page:  1,
   })
 
   return (
