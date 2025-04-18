@@ -1,13 +1,10 @@
 // app/(root)/profile/[id]/page.tsx
-'use client'; // Add this at the top
-
-import { useEffect, useState } from 'react';
-import { useUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/users.action';
+import { notFound, redirect } from 'next/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { notFound, useRouter } from 'next/navigation';
 import ProfileLink from '@/components/shared/ProfileLink';
 import { getJoinedDate } from '@/lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,65 +12,23 @@ import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
 
-interface UserInfoType {
-  user: {
-    _id: string;
-    clerkId: string;
-    picture: string;
-    name: string;
-    username: string;
-    portfolioWebsite?: string;
-    location?: string;
-    joinedAt: Date;
-    bio?: string;
-  };
-  totalQuestions: number;
-  totalAnswers: number;
-}
+export const dynamic = 'force-dynamic';
 
-export default function ProfilePage({
+export default async function ProfilePage({
   params,
   searchParams,
 }: {
   params: { id: string };
-  searchParams: { [key: string]: string  | undefined };
+  searchParams: { [key: string]: string | undefined };
 }) {
-  const { id } = params;
-  const { user: clerkUser, isSignedIn } = useUser();
-  const router = useRouter();
-  const [userInfo, setUserInfo] = useState<UserInfoType | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!isSignedIn) {
-        router.push('/sign-in');
-        return;
-      }
-
-      try {
-        const data = await getUserInfo({ userId: id });
-        if (!data) {
-          notFound();
-        }
-        setUserInfo(data);
-      } catch (error) {
-        console.error('Failed to fetch user info:', error);
-        notFound();
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [id, isSignedIn, router]);
-
-  if (loading) {
-    return <div className="flex-center h-full w-full">Loading...</div>;
+  const user = await currentUser();
+  if (!user) {
+    return redirect('/sign-in');
   }
 
+  const userInfo = await getUserInfo({ userId: params.id });
   if (!userInfo) {
-    return <div className="flex-center h-full w-full">User not found</div>;
+    return notFound();
   }
 
   return (
@@ -124,7 +79,7 @@ export default function ProfilePage({
         </div>
 
         <div className="flex justify-end max-sm:mb-5 max-sm:w-full sm:mt-3">
-          {clerkUser?.id === userInfo.user.clerkId && (
+          {user.id === userInfo.user.clerkId && (
             <Link href="/profile/edit">
               <Button className="paragraph-medium btn-secondary text-dark300_light900 min-h-[46px] min-w-[175px] px-4 py-3">
                 Edit Profile
@@ -149,14 +104,14 @@ export default function ProfilePage({
             <QuestionTab
               searchParams={searchParams}
               userId={userInfo.user._id}
-              clerkId={clerkUser?.id || ''}
+              clerkId={user.id}
             />
           </TabsContent>
           <TabsContent value="answers" className="flex w-full flex-col gap-6">
             <AnswersTab
               searchParams={searchParams}
               userId={userInfo.user._id}
-              clerkId={clerkUser?.id || ''}
+              clerkId={user.id}
             />
           </TabsContent>
         </Tabs>
