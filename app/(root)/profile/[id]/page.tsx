@@ -14,7 +14,7 @@ import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
 
-const Page = async ({ params, searchParams }: URLProps) => {
+const Page = async ({ params, searchParams}: URLProps) => {
 
     const session = await auth();
     const { userId } = session;
