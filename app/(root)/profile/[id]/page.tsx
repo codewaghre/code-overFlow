@@ -20,19 +20,13 @@ export const dynamic = "force-dynamic"
 
 const Page = async ({ params, searchParams }: URLProps) => {
 
+    const { userId } = await auth();
 
+    if (!userId) return null
 
-    const session = await auth();
-    const userId = session?.userId;
-
-    if (!userId) return <div>User not authenticated.</div>
-    const userInfo = await getUserInfo({ userId: userId })
+    const userInfo = await getUserInfo({ userId: params?.id })
 
     if (!userInfo) return <div>User not found.</div>
-
-    console.log("user id", userId);
-    console.log("params id", params.id);
-
 
 
     return (

@@ -17,6 +17,7 @@ const Page = async() => {
     const result = await getSavedQuestions({
         clerkId: userId,
     });
+    
     return (
         <>
             <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>
