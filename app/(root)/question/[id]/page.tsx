@@ -12,10 +12,14 @@ import Answer from '@/components/form/Answer';
 import AllAnswers from '@/components/shared/AllAnswers';
 import Votes from '@/components/shared/Votes';
 
+type Props = {
+  params: {
+    id: string;
+  };
+};
 
 
-
-const page = async ({ params }: any) => {
+const page = async ({ params }: Props) => {
 
     const session = await auth();
     const { userId } = session;

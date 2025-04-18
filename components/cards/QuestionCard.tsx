@@ -19,7 +19,7 @@ interface QuestionProps {
         picture: string;
         clerkId: string;
     };
-    upvotes: number;
+    upvotes: Array<object>;
     views: number;
     answers: Array<object>;
     createdAt: Date;
@@ -41,6 +41,7 @@ const QuestionCard = ({
 
     const showActionButtons = clerkId && clerkId === author.clerkId;
 
+    
     return (
         <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
             <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -82,7 +83,7 @@ const QuestionCard = ({
                     <Metric
                         imgUrl="/assets/icons/like.svg"
                         alt="Upvotes"
-                        value={formatAndDivideNumber(upvotes)}
+                        value={formatAndDivideNumber(upvotes.length)}
                         title=" Votes"
                         textStyles="small-medium text-dark400_light800"
                     />

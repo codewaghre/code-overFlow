@@ -199,7 +199,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                         <FormItem className="flex w-full flex-col">
                             <FormLabel className="paragraph-semibold text-dark400_light800">Tags <span className="text-primary-500">*</span></FormLabel>
                             <FormControl className="mt-3.5">
-                                <>
+                                <div>
                                     <Input
                                         disabled={type === 'Edit'}
                                         className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
@@ -224,7 +224,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                                             ))}
                                         </div>
                                     )}
-                                </>
+                                </div>
                             </FormControl>
                             <FormDescription className="body-regular mt-2.5 text-light-500">
                                 Add up to 3 tags to describe what your question is about. You need to press enter to add a tag.

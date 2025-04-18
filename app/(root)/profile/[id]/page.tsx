@@ -1,7 +1,6 @@
 import React from 'react'
 import { auth } from '@clerk/nextjs/server'
 import { getUserInfo } from '@/lib/actions/users.action';
-// import { URLProps } from '@/types';
 import { SignedIn } from '@clerk/nextjs'
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -13,10 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
+import { URLProps } from '@/types';
 
 
 
-const Page = async({ params, searchParams}: any) => {
+const Page = async({ params, searchParams}: URLProps) => {
 
     const userInfo = await getUserInfo({ userId: params.id })
 
