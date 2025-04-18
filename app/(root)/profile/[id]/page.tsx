@@ -14,14 +14,12 @@ import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
 
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | undefined };
-};
 
-const Page = async({ params, searchParams}: Props) => {
+
+const Page = async({ params, searchParams}: any) => {
 
     const userInfo = await getUserInfo({ userId: params.id })
+
     const session = await auth();
     const { userId } = session;
 
