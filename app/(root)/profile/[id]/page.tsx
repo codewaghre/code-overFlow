@@ -1,7 +1,7 @@
 import React from 'react'
 import { auth } from '@clerk/nextjs/server'
 import { getUserInfo } from '@/lib/actions/users.action';
-import { URLProps } from '@/types';
+// import { URLProps } from '@/types';
 import { SignedIn } from '@clerk/nextjs'
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,12 @@ import QuestionTab from '@/components/shared/QuestionTab';
 import Stats from '@/components/shared/Stats';
 import AnswersTab from '@/components/shared/AnswersTab';
 
-const Page = async ({ params, searchParams}: URLProps) => {
+type PageProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | undefined };
+};
+
+const Page = async({ params, searchParams}: PageProps) => {
 
     const session = await auth();
     const { userId } = session;
