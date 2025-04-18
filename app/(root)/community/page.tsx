@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React from 'react'
 
 
@@ -14,7 +14,7 @@ import UserCard from '@/components/cards/UserCard';
 
 const Page = async() => {
 
-  const result = await getAllUsers()
+  const result = await getAllUsers({})
 
   
   return (

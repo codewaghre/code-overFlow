@@ -15,15 +15,25 @@ import AnswersTab from '@/components/shared/AnswersTab';
 import { URLProps } from '@/types';
 
 
+// 👇 Ensure Vercel doesn't pre-render this page
+export const dynamic = "force-dynamic"
 
-const Page = async({ params, searchParams}: URLProps) => {
+const Page = async ({ params, searchParams }: URLProps) => {
 
-    const userInfo = await getUserInfo({ userId: params.id })
+
 
     const session = await auth();
-    const { userId } = session;
+    const userId = session?.userId;
 
-    if (!userId) return null
+    if (!userId) return <div>User not authenticated.</div>
+    const userInfo = await getUserInfo({ userId: userId })
+
+    if (!userInfo) return <div>User not found.</div>
+
+    console.log("user id", userId);
+    console.log("params id", params.id);
+
+
 
     return (
         <>
@@ -89,7 +99,7 @@ const Page = async({ params, searchParams}: URLProps) => {
                 // reputation={userInfo.reputation}
                 totalQuestions={userInfo.totalQuestions}
                 totalAnswers={userInfo.totalAnswers}
-                // badges={userInfo.badgeCounts}
+            // badges={userInfo.badgeCounts}
             />
 
             <div className="mt-10 flex gap-10">
