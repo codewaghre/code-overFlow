@@ -47,15 +47,14 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
     const pathname = usePathname();
 
     const parsedQuestionDetails = questionDetails && JSON.parse(questionDetails || '');
-
     const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name)
 
 
     const form = useForm<z.infer<typeof QuestionsSchema>>({
         resolver: zodResolver(QuestionsSchema),
         defaultValues: {
-            title: "",
-            explanation: "",
+            title: parsedQuestionDetails?.title || '',
+            explanation: parsedQuestionDetails?.content || '',
             tags: groupedTags || []
         },
     })
@@ -166,7 +165,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                                     }}
                                     onBlur={field.onBlur}
                                     onEditorChange={(content) => field.onChange(content)}
-                                    initialValue=""
+                                    initialValue={parsedQuestionDetails?.content || ''}
                                     init={{
                                         height: 350,
                                         menubar: false,
@@ -202,7 +201,7 @@ const Question = ({ mongoUserId, type, questionDetails }: Props) => {
                             <FormControl className="mt-3.5">
                                 <>
                                     <Input
-                                        // disabled={type === 'Edit'}
+                                        disabled={type === 'Edit'}
                                         className="no-focus paragraph-regular background-light900_dark300 light-border-2 text-dark300_light700 min-h-[56px] border"
                                         placeholder="Add tags..."
                                         onKeyDown={(e) => handleInputKeyDown(e, field)}
