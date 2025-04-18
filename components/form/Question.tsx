@@ -25,20 +25,20 @@ import { Badge } from '../ui/badge';
 import { Button } from "../ui/button"
 import { QuestionsSchema } from '@/lib/validations'
 import { useTheme } from '@/context/themeContext';
-import { createQuestion } from '@/lib/actions/question.action';
+import { createQuestion, editQuestion } from '@/lib/actions/question.action';
 
 import { useRouter, usePathname } from 'next/navigation';
 
 
-//TODO : set types
-const type: any = "edit"
-
 interface Props {
-    mongoUserId: string
+    type?: string;
+    mongoUserId: string;
+    questionDetails?: string;
 }
 
 
-const Question = ({ mongoUserId }: Props) => {
+
+const Question = ({ mongoUserId, type, questionDetails }: Props) => {
 
     const editorRef = useRef(null);
     const { mode } = useTheme();
@@ -46,12 +46,17 @@ const Question = ({ mongoUserId }: Props) => {
     const router = useRouter();
     const pathname = usePathname();
 
+    const parsedQuestionDetails = questionDetails && JSON.parse(questionDetails || '');
+
+    const groupedTags = parsedQuestionDetails?.tags.map((tag: any) => tag.name)
+
+
     const form = useForm<z.infer<typeof QuestionsSchema>>({
         resolver: zodResolver(QuestionsSchema),
         defaultValues: {
             title: "",
             explanation: "",
-            tags: []
+            tags: groupedTags || []
         },
     })
 
@@ -63,16 +68,27 @@ const Question = ({ mongoUserId }: Props) => {
 
 
         try {
-            await createQuestion({
-                title: values.title,
-                content: values.explanation,
-                tags: values.tags,
-                author: JSON.parse(mongoUserId),
-                path: pathname,
 
-            })
+            if (type === 'Edit') {
+                await editQuestion({
+                    questionId: parsedQuestionDetails._id,
+                    title: values.title,
+                    content: values.explanation,
+                    path: pathname,
+                })
 
-            router.push('/');
+                router.push(`/question/${parsedQuestionDetails._id}`);
+            } else {
+                await createQuestion({
+                    title: values.title,
+                    content: values.explanation,
+                    tags: values.tags,
+                    author: JSON.parse(mongoUserId),
+                    path: pathname,
+                });
+
+                router.push('/');
+            }
 
         } catch (error) {
             console.log(error);
