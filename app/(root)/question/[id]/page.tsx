@@ -12,15 +12,16 @@ import Answer from '@/components/form/Answer';
 import AllAnswers from '@/components/shared/AllAnswers';
 import Votes from '@/components/shared/Votes';
 
+
 type Props = {
-  params: Promise<{
-    id: string;
-  }>;
+    params: {
+        id: string;
+    };
+    searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 
-const page = async (props: Props) => {
-    const params = await props.params;
+const page = async ({ params, searchParams }: Props) => {
 
     const session = await auth();
     const { userId } = session;
@@ -110,8 +111,12 @@ const page = async (props: Props) => {
                 questionId={result._id}
                 userId={mongoUser._id}
                 totalAnswers={result.answers.length}
-                // page={searchParams?.page}
-                // filter={searchParams?.filter}
+                page={
+                    Array.isArray(searchParams?.page) ? searchParams.page[0] : searchParams?.page
+                }
+                filter={
+                    Array.isArray(searchParams?.filter) ? searchParams.filter[0] : searchParams?.filter
+                }
             />
 
             <Answer

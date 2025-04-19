@@ -7,14 +7,14 @@ import { getTimestamp } from '@/lib/utils';
 import { AnswerFilters } from '@/constants/filters';
 import Filter from './Filter';
 import Votes from './Votes';
-// import Pagination from './Pagination';
+import Pagination from './Pagination';
 
 interface Props {
   questionId: string;
   userId?: string;
   totalAnswers: number;
-  page?: number;
-  filter?: string;
+  page?: string;
+  filter?: string ;
 }
 
 
@@ -74,12 +74,12 @@ const AllAnswers = async ({ userId, questionId, totalAnswers, page ,filter}: Pro
         ))}
       </div>
 
-      {/* <div className="mt-10 w-full">
+      <div className="mt-10 w-full">
         <Pagination
           pageNumber={page ? +page : 1}
           isNext={result.isNextAnswer}
         />
-      </div> */}
+      </div>
     </div>
   )
 }
