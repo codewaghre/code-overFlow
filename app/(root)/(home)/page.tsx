@@ -9,14 +9,18 @@ import HomeFilter from '@/components/shared/HomeFilter';
 import QuestionCard from '@/components/cards/QuestionCard';
 import NoResult from '@/components/shared/NoResult';
 import { getQuestion } from '@/lib/actions/question.action';
-import { SearchParamsProps } from '@/types';
 import Pagination from '@/components/shared/Pagination';
 
 
 
 
-const Home = async({ searchParams }: SearchParamsProps) => {
+const Home = async(props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+  }) => {
 
+  const searchParams = await props.searchParams;
+  
    
   const result = await getQuestion({
     searchQuery: searchParams.q,
