@@ -29,7 +29,7 @@ const EditDeleteAction = ({ type, itemId }: Props) => {
       // Delete answer
       await deleteAnswer({ 
         answerId: JSON.parse(itemId), 
-        path: pathname 
+        path: '/profile' 
       })
     }
   };

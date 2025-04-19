@@ -4,6 +4,7 @@ import { URLProps } from '@/types'
 import NoResult from '@/components/shared/NoResult'
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
 import QuestionCard from '@/components/cards/QuestionCard'
+import Pagination from '@/components/shared/Pagination'
 
 const Page = async (props: URLProps) => {
     const searchParams = await props.searchParams;
@@ -51,12 +52,12 @@ const Page = async (props: URLProps) => {
                     />}
             </div>
 
-            {/* <div className="mt-10">
+            <div className="mt-10">
                 <Pagination
                     pageNumber={searchParams?.page ? +searchParams.page : 1}
                     isNext={result.isNext}
                 />
-            </div> */}
+            </div>
         </>
     )
 }

@@ -10,54 +10,85 @@ import Interaction from "@/database/interaction.model";
 
 
 export async function createAnswer(params: CreateAnswerParams) {
-    try {
-        connectToDatabase();
+  try {
+    connectToDatabase();
 
-        const { content, author, question, path } = params;
+    const { content, author, question, path } = params;
 
-        const newAnswer = await Answer.create({ content, author, question });
+    const newAnswer = await Answer.create({ content, author, question });
 
-        // Add the answer to the question's answers array
-        await Question.findByIdAndUpdate(question, {
-            $push: { answers: newAnswer._id }
-        })
+    // Add the answer to the question's answers array
+    await Question.findByIdAndUpdate(question, {
+      $push: { answers: newAnswer._id }
+    })
 
-        // await Interaction.create({
-        //   user: author,
-        //   action: "answer",
-        //   question,
-        //   answer: newAnswer._id,
-        //   tags: questionObject.tags
-        // })
+    // await Interaction.create({
+    //   user: author,
+    //   action: "answer",
+    //   question,
+    //   answer: newAnswer._id,
+    //   tags: questionObject.tags
+    // })
 
-        // await User.findByIdAndUpdate(author, { $inc: { reputation: 10 }})
+    // await User.findByIdAndUpdate(author, { $inc: { reputation: 10 }})
 
-        revalidatePath(path)
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
+    revalidatePath(path)
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 
 export async function getAnswers(params: GetAnswersParams) {
-    try {
-        connectToDatabase();
+  try {
+    connectToDatabase();
 
-        const { questionId } = params;
+    const { questionId, page = 1, pageSize = 5, sortBy } = params;
 
-        const answers = await Answer.find({ question: questionId })
-            .populate("author", "_id clerkId name picture")
-            .sort({ createdAt: -1 })
-        
-        
-        return { answers }
+    const skipAmount = (page - 1) * pageSize;
 
+    let sortOptions = {}
 
-    } catch (error) {
-        console.log(error);
-        throw error;
+    switch (sortBy) {
+      case "highestUpvotes":
+        sortOptions = { upvotes: -1 }
+        break;
+      case "lowestUpvotes":
+        sortOptions = { upvotes: 1 }
+        break;
+      case "recent":
+        sortOptions = { createdAt: -1 }
+        break;
+      case "old":
+        sortOptions = { createdAt: 1 }
+        break;
+
+      default:
+        break;
     }
+
+
+    const answers = await Answer.find({ question: questionId })
+      .populate("author", "_id clerkId name picture")
+      .sort(sortOptions)
+      .skip(skipAmount)
+      .limit(pageSize)
+
+    const totalAnswer = await Answer.countDocuments({
+      question: questionId
+    })
+
+    const isNextAnswer = totalAnswer > skipAmount + answers.length;
+
+
+    return { answers, isNextAnswer }
+
+
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 
@@ -69,20 +100,20 @@ export async function upvoteAnswer(params: AnswerVoteParams) {
 
     let updateQuery = {};
 
-    if(hasupVoted) {
-      updateQuery = { $pull: { upvotes: userId }}
+    if (hasupVoted) {
+      updateQuery = { $pull: { upvotes: userId } }
     } else if (hasdownVoted) {
-      updateQuery = { 
+      updateQuery = {
         $pull: { downvotes: userId },
         $push: { upvotes: userId }
       }
     } else {
-      updateQuery = { $addToSet: { upvotes: userId }}
+      updateQuery = { $addToSet: { upvotes: userId } }
     }
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
 
-    if(!answer) {
+    if (!answer) {
       throw new Error("Answer not found");
     }
 
@@ -111,20 +142,20 @@ export async function downvoteAnswer(params: AnswerVoteParams) {
 
     let updateQuery = {};
 
-    if(hasdownVoted) {
-      updateQuery = { $pull: { downvote: userId }}
+    if (hasdownVoted) {
+      updateQuery = { $pull: { downvote: userId } }
     } else if (hasupVoted) {
-      updateQuery = { 
+      updateQuery = {
         $pull: { upvotes: userId },
         $push: { downvotes: userId }
       }
     } else {
-      updateQuery = { $addToSet: { downvotes: userId }}
+      updateQuery = { $addToSet: { downvotes: userId } }
     }
 
     const answer = await Answer.findByIdAndUpdate(answerId, updateQuery, { new: true });
 
-    if(!answer) {
+    if (!answer) {
       throw new Error("Answer not found");
     }
 
@@ -153,12 +184,12 @@ export async function deleteAnswer(params: DeleteAnswerParams) {
 
     const answer = await Answer.findById(answerId);
 
-    if(!answer) {
+    if (!answer) {
       throw new Error("Answer not found");
     }
 
     await answer.deleteOne({ _id: answerId });
-    await Question.updateMany({ _id: answer.question }, { $pull: { answers: answerId }});
+    await Question.updateMany({ _id: answer.question }, { $pull: { answers: answerId } });
     await Interaction.deleteMany({ answer: answerId });
 
     revalidatePath(path);
