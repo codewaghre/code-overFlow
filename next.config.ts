@@ -4,7 +4,10 @@ const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
     mdxRs: true,
+    
   },
+  serverExternalPackages: [ '@clerk/nextjs/server'],
+   
   images: {
     remotePatterns: [
       {

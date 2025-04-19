@@ -14,13 +14,14 @@ import AnswersTab from '@/components/shared/AnswersTab';
 
 export const dynamic = 'force-dynamic';
 
-export default async function ProfilePage({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams: { [key: string]: string | undefined };
-}) {
+export default async function ProfilePage(
+  props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+  }
+) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
   const user = await currentUser();
   if (!user) {
     return redirect('/sign-in');

@@ -7,7 +7,8 @@ import Question from '@/components/form/Question';
 
 
 
-const Page = async ({params}: ParamsProps) => {
+const Page = async (props: ParamsProps) => {
+  const params = await props.params;
   const session = await auth();
   const { userId } = session;
 

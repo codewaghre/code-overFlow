@@ -13,13 +13,14 @@ import AllAnswers from '@/components/shared/AllAnswers';
 import Votes from '@/components/shared/Votes';
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 
-const page = async ({ params }: Props) => {
+const page = async (props: Props) => {
+    const params = await props.params;
 
     const session = await auth();
     const { userId } = session;
