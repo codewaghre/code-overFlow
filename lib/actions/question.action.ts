@@ -5,18 +5,31 @@ import Tag from "@/database/tag.model";
 
 import { connectToDatabase } from "../mongoose"
 import { revalidatePath } from "next/cache"
-import { CreateQuestionParams, DeleteQuestionParams, EditQuestionParams, GetQuestionByIdParams, QuestionVoteParams } from "./shared.types";
+import { CreateQuestionParams, DeleteQuestionParams, EditQuestionParams, GetQuestionByIdParams, GetQuestionsParams, QuestionVoteParams } from "./shared.types";
 import User from "@/database/user.model";
 import Answer from "@/database/answer.model";
 import Interaction from "@/database/interaction.model";
+import { FilterQuery } from "mongoose";
 
 
-export async function getQuestion() {
+export async function getQuestion(params: GetQuestionsParams) {
 
     //! User Params
     try {
-        connectToDatabase()
-        const questions = await Question.find({})
+      connectToDatabase()
+      
+      const { searchQuery } = params
+      
+      const query: FilterQuery<typeof Question> = {}
+      
+      if(searchQuery) {
+      const escapedSearchQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      query.$or = [
+        { title: { $regex: new RegExp(escapedSearchQuery, "i")}},
+        { content: { $regex: new RegExp(escapedSearchQuery, "i")}},
+      ]
+    }
+        const questions = await Question.find(query)
             .populate({ path: 'tags', model: Tag })
             .populate({ path: 'author', model: User })
             .sort({ createdAt: -1 })

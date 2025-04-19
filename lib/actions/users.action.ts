@@ -8,6 +8,7 @@ import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 import Tag from "@/database/tag.model";
 import Answer from "@/database/answer.model";
+import { FilterQuery } from "mongoose";
 
 export async function getUserByID(params: any) {
 
@@ -91,7 +92,17 @@ export async function getAllUsers(params: GetAllUsersParams) {
 
   try {
     connectToDatabase()
-    const users = await User.find({}).sort({ createdAt: -1 })
+    const { searchQuery } = params
+    const query: FilterQuery<typeof Question> = {}
+
+    if (searchQuery) {
+      const escapedSearchQuery = searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+      query.$or = [
+        { name: { $regex: new RegExp(escapedSearchQuery, "i") } },
+        { username: { $regex: new RegExp(escapedSearchQuery, "i") } },
+      ]
+    }
+    const users = await User.find(query).sort({ createdAt: -1 })
 
     return { users }
 
@@ -144,11 +155,15 @@ export async function getSavedQuestions(params: GetSavedQuestionsParams) {
 
     const { clerkId, searchQuery, filter, page = 1, pageSize = 10 } = params;
 
+    const qurey : FilterQuery< typeof Question> = searchQuery
+      ? { title: { $regex: new RegExp(searchQuery, 'i') } }
+      : { };
+
     const user = await User
       .findOne({ clerkId })
       .populate({
         path: 'saved',
-        match: {},
+        match: qurey,
         options: {
           sort: { createdAt: -1 }
         },

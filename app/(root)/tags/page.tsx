@@ -6,10 +6,13 @@ import { HomePageFilters } from '@/constants/filters';
 import Filter from '@/components/shared/Filter';
 import { getAllTags } from '@/lib/actions/tag.action';
 import NoResult from '@/components/shared/NoResult';
+import { SearchParamsProps } from '@/types';
 
-const Page = async () => {
+const Page = async ({searchParams}: SearchParamsProps) => {
 
-    const result = await getAllTags({})
+    const result = await getAllTags({
+        searchQuery: searchParams.q
+    })
     return (
         <>
             <div className="flex w-full flex-col-reverse justify-between  gap-4 sm:flex-row sm:items-center">
@@ -18,7 +21,7 @@ const Page = async () => {
 
             <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
                 <LocalSearchbar
-                    route="/community"
+                    route="/tags"
                     iconPosition="left"
                     imgSrc="/assets/icons/search.svg"
                     placeholder="Search for Tags"

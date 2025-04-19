@@ -4,10 +4,11 @@ import NoResult from '@/components/shared/NoResult'
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
 import { QuestionFilters } from '@/constants/filters'
 import { getSavedQuestions } from '@/lib/actions/users.action'
+import { SearchParamsProps } from '@/types'
 import { auth } from '@clerk/nextjs/server'
 import React from 'react'
 
-const Page = async() => {
+const Page = async({searchParams}: SearchParamsProps) => {
 
     const session = await auth();
     const { userId } = session;
@@ -16,6 +17,7 @@ const Page = async() => {
 
     const result = await getSavedQuestions({
         clerkId: userId,
+        searchQuery: searchParams.q
     });
     
     return (

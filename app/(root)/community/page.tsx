@@ -9,12 +9,15 @@ import Filter from '@/components/shared/Filter';
 import { getAllUsers } from '@/lib/actions/users.action';
 import Link from 'next/link';
 import UserCard from '@/components/cards/UserCard';
+import { SearchParamsProps } from '@/types';
 
 
 
-const Page = async() => {
+const Page = async({searchParams}: SearchParamsProps) => {
 
-  const result = await getAllUsers({})
+  const result = await getAllUsers({
+     searchQuery: searchParams.q
+  })
 
   
   return (

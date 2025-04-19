@@ -8,6 +8,7 @@ import QuestionCard from '@/components/cards/QuestionCard'
 const Page = async (props: URLProps) => {
     const searchParams = await props.searchParams;
     const params = await props.params;
+    
     const result = await getQuestionsByTagId({
         tagId: params.id,
         page: searchParams.page ? +searchParams.page : 1,
