@@ -2,8 +2,6 @@ import React from 'react'
 import Link from 'next/link'
 
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
-import { HomePageFilters } from '@/constants/filters';
-import Filter from '@/components/shared/Filter';
 import { getAllTags } from '@/lib/actions/tag.action';
 import NoResult from '@/components/shared/NoResult';
 import { SearchParamsProps } from '@/types';
@@ -26,11 +24,6 @@ const Page = async ({searchParams}: SearchParamsProps) => {
                     imgSrc="/assets/icons/search.svg"
                     placeholder="Search for Tags"
                     otherClasses="flex-1"
-                />
-
-                <Filter
-                    filters={HomePageFilters}
-                    otherClasses="min-h-[56px] sm:min-w-[170px]"
                 />
             </div>
 

@@ -3,7 +3,7 @@ import React from 'react'
 
 
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
-import { HomePageFilters } from '@/constants/filters';
+import { UserFilters } from '@/constants/filters';
 
 import Filter from '@/components/shared/Filter';
 import { getAllUsers } from '@/lib/actions/users.action';
@@ -16,7 +16,8 @@ import { SearchParamsProps } from '@/types';
 const Page = async({searchParams}: SearchParamsProps) => {
 
   const result = await getAllUsers({
-     searchQuery: searchParams.q
+    searchQuery: searchParams.q,
+    filter: searchParams.filter,
   })
 
   
@@ -36,7 +37,7 @@ const Page = async({searchParams}: SearchParamsProps) => {
         />
 
         <Filter
-          filters={HomePageFilters}
+          filters={UserFilters}
           otherClasses="min-h-[56px] sm:min-w-[170px]"
         />
       </div>
