@@ -1,27 +1,28 @@
 import React from 'react'
-import { auth } from '@clerk/nextjs/server'
-import { getUserByID } from '@/lib/actions/users.action';
-import { getQuestionById } from '@/lib/actions/question.action';
+
 import Image from 'next/image';
 import Link from 'next/link';
+
 import Metric from '@/components/shared/Metric';
-import { formatAndDivideNumber, getTimestamp } from '@/lib/utils';
 import ParseHTML from '@/components/shared/ParseHTML';
 import RenderTag from '@/components/shared/RenderTag';
 import Answer from '@/components/form/Answer';
 import AllAnswers from '@/components/shared/AllAnswers';
 import Votes from '@/components/shared/Votes';
 
-
-type Props = {
-    params: {
-        id: string;
-    };
-    searchParams?: { [key: string]: string | string[] | undefined };
-};
+import { formatAndDivideNumber, getTimestamp } from '@/lib/utils';
+import { auth } from '@clerk/nextjs/server'
+import { getUserByID } from '@/lib/actions/users.action';
+import { getQuestionById } from '@/lib/actions/question.action';
 
 
-const page = async ({ params, searchParams }: Props) => {
+const page = async (props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) => {
+
+    const params = await props.params;
+     const searchParams = await props.searchParams;
 
     const session = await auth();
     const { userId } = session;

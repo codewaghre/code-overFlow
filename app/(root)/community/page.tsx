@@ -1,6 +1,4 @@
-
 import React from 'react'
-
 
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
 import { UserFilters } from '@/constants/filters';
@@ -9,12 +7,16 @@ import Filter from '@/components/shared/Filter';
 import { getAllUsers } from '@/lib/actions/users.action';
 import Link from 'next/link';
 import UserCard from '@/components/cards/UserCard';
-import { SearchParamsProps } from '@/types';
 import Pagination from '@/components/shared/Pagination';
 
 
 
-const Page = async({searchParams}: SearchParamsProps) => {
+const Page = async (props: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+
+  const searchParams = await props.searchParams;
 
   const result = await getAllUsers({
     searchQuery: searchParams.q,
@@ -22,7 +24,7 @@ const Page = async({searchParams}: SearchParamsProps) => {
     page: searchParams.page ? +searchParams.page : 1,
   })
 
-  
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between  gap-4 sm:flex-row sm:items-center">
@@ -45,8 +47,8 @@ const Page = async({searchParams}: SearchParamsProps) => {
       </div>
 
       <section className="mt-12 flex flex-wrap gap-4">
-        {result && result.users.length > 0  ? (
-          result?.users.map((user)=> (
+        {result && result.users.length > 0 ? (
+          result?.users.map((user) => (
             <UserCard key={user._id} user={user} />
           ))
         ) : (
@@ -59,8 +61,8 @@ const Page = async({searchParams}: SearchParamsProps) => {
         )}
       </section>
 
-       <div className="mt-10">
-        <Pagination 
+      <div className="mt-10">
+        <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
           isNext={result && result.isNext}
         />

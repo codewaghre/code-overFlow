@@ -2,16 +2,22 @@ import React from 'react'
 import Link from 'next/link'
 
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar';
-import { getAllTags } from '@/lib/actions/tag.action';
 import NoResult from '@/components/shared/NoResult';
-import { SearchParamsProps } from '@/types';
 import Pagination from '@/components/shared/Pagination';
 
-const Page = async ({ searchParams }: SearchParamsProps) => {
+import { getAllTags } from '@/lib/actions/tag.action';
+
+const Page = async (props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
+
+
+    const searchParams = await props.searchParams;
 
     const result = await getAllTags({
         searchQuery: searchParams.q,
-         page: searchParams.page ? +searchParams.page : 1,
+        page: searchParams.page ? +searchParams.page : 1,
 
     })
     return (

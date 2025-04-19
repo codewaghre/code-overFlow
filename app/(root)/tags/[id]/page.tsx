@@ -1,12 +1,16 @@
-import { getQuestionsByTagId } from '@/lib/actions/tag.action'
 import React from 'react'
-import { URLProps } from '@/types'
+
 import NoResult from '@/components/shared/NoResult'
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
 import QuestionCard from '@/components/cards/QuestionCard'
 import Pagination from '@/components/shared/Pagination'
 
-const Page = async (props: URLProps) => {
+import { getQuestionsByTagId } from '@/lib/actions/tag.action'
+
+const Page = async ( props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+  }) => {
     const searchParams = await props.searchParams;
     const params = await props.params;
     

@@ -1,16 +1,23 @@
+import React from 'react'
+
 import QuestionCard from '@/components/cards/QuestionCard'
 import Filter from '@/components/shared/Filter'
 import NoResult from '@/components/shared/NoResult'
 import Pagination from '@/components/shared/Pagination'
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
+
 import { QuestionFilters } from '@/constants/filters'
 import { getSavedQuestions } from '@/lib/actions/users.action'
-import { SearchParamsProps } from '@/types'
 import { auth } from '@clerk/nextjs/server'
-import React from 'react'
 
-const Page = async({searchParams}: SearchParamsProps) => {
 
+const Page = async (props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+}
+) => {
+
+    const searchParams = await props.searchParams;
     const session = await auth();
     const { userId } = session;
 
@@ -20,9 +27,9 @@ const Page = async({searchParams}: SearchParamsProps) => {
         clerkId: userId,
         searchQuery: searchParams.q,
         filter: searchParams.filter,
-         page: searchParams.page ? +searchParams.page : 1,         
+        page: searchParams.page ? +searchParams.page : 1,
     });
-    
+
     return (
         <>
             <h1 className="h1-bold text-dark100_light900">Saved Questions</h1>

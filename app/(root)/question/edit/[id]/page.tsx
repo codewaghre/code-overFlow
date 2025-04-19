@@ -1,13 +1,17 @@
 import React from 'react'
+
 import { auth } from '@clerk/nextjs/server'
 import { getUserByID } from '@/lib/actions/users.action';
-import { ParamsProps } from '@/types';
 import { getQuestionById } from '@/lib/actions/question.action';
+
 import Question from '@/components/form/Question';
 
 
 
-const Page = async (props: ParamsProps) => {
+const Page = async ( props: {
+    params: Promise<{ id: string }>;
+    searchParams: Promise<{ [key: string]: string | undefined }>;
+  }) => {
   const params = await props.params;
   const session = await auth();
   const { userId } = session;
