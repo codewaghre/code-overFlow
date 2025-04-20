@@ -11,7 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/context/themeContext'
 import { Button } from '../ui/button'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { createAnswer } from '@/lib/actions/answer.action'
 
 interface Props {
@@ -25,7 +25,7 @@ const Answer = ({ questionId, authorId}: Props) => {
 
     const pathname = usePathname();
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isSubmittingAI] = useState(false);
+    // const [isSubmittingAI] = useState(false);
     const { mode } = useTheme();
     const editorRef = useRef(null)
 
@@ -69,7 +69,7 @@ const Answer = ({ questionId, authorId}: Props) => {
                 <div className="flex flex-col mt-5 justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
                     <h4 className="paragraph-semibold text-dark400_light800">Write your answer here</h4>
 
-                    <Button className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
+                    {/* <Button className="btn light-border-2 gap-1.5 rounded-md px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
 
                     >
                         {isSubmittingAI ? (
@@ -88,7 +88,7 @@ const Answer = ({ questionId, authorId}: Props) => {
                                 Generate AI Answer
                             </>
                         )}
-                    </Button>
+                    </Button> */}
 
 
                 </div>
