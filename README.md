@@ -34,6 +34,7 @@
 - HTML, CSS, JavaScript
 - React.js
 - Next.js
+- TypeScript 
 
 **Backend:**
 - MongoDB
