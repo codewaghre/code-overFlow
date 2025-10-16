@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💬 CodeOverflow
 
-## Getting Started
+**CodeOverflow** is a modern developer-centric discussion platform inspired by forums like Stack Overflow. It enables users to ask questions, search posts interactively, bookmark discussions, and engage through a reputation-based ranking system. Designed for scalability, speed, and responsiveness — it's optimized for community interaction and future feature expansion.
 
-First, run the development server:
+🔗 **Live Demo:** [code-over-flow-phi.vercel.app](https://code-over-flow-phi.vercel.app)  
+
+![codeoverflow](https://github.com/user-attachments/assets/521f6bc1-0b92-40fa-aec0-4dabe1f3e0b6)
+
+---
+
+## 🧑‍💻 About the Project
+
+> “A forum-like experience was crafted, supporting interactive search, pagination, and bookmarking functionality.  
+> A user ranking system was designed to support engagement and create a sense of reputation-based motivation.  
+> MongoDB models were carefully structured to allow quick lookups and accommodate future scaling needs.”
+
+
+---
+
+## 🚀 Features
+
+- 🔍 **Interactive Search** — Dynamic search experience with real-time query updates
+- 📚 **Pagination** — Smooth navigation through large datasets
+- 🔖 **Bookmark System** — Save important questions/posts for quick access
+- 🧠 **User Ranking System** — Reputation-based gamification to boost engagement
+- ⚡ **Optimized MongoDB Models** — Built for performance, scalability, and fast lookups
+- 📱 **Responsive UI** — Seamlessly works on mobile, tablet, and desktop
+
+---
+
+## 🧰 Tech Stack
+
+**Frontend:**
+- HTML, CSS, JavaScript
+- React.js
+- Next.js
+- TypeScript 
+
+**Backend:**
+- MongoDB
+- Mongoose
+- Prisma ORM
+
+---
+
+## 📦 Installation & Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/codewaghre/code-overFlow.git
+cd code-overFlow
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+> If you're using a monorepo or separate client/server structure, navigate accordingly and install dependencies in both folders.
+
+---
+
+### 3. Set up environment variables
+
+Create a `.env` file at the root and configure the following:
+
+```env
+MONGODB_URI=mongodb+srv://<your-cluster-url>
+NEXTAUTH_SECRET=your_secret_key
+NEXTAUTH_URL=http://localhost:3000
+```
+
+Replace `<your-cluster-url>` with your MongoDB connection string.
+
+---
+
+### 4. Run the app
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The app will start on: [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📬 Contact
 
-## Learn More
+**Abhishek Ashok Waghre**  
+📧 [waghreabhishek@gmail.com](mailto:waghreabhishek@gmail.com)  
+🔗 [LinkedIn](https://www.linkedin.com/in/waghre-abhishek)  
+💻 [GitHub](https://github.com/codewaghre)
 
-To learn more about Next.js, take a look at the following resources:
+## 📎 License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the [MIT License](LICENSE).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
