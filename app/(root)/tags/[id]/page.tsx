@@ -2,18 +2,18 @@ import React from 'react'
 
 import NoResult from '@/components/shared/NoResult'
 import LocalSearchbar from '@/components/shared/search/LocalSearchbar'
-import QuestionCard from '@/components/cards/QuestionCard'
+import QuestionCard from '@/components/form/cards/QuestionCard'
 import Pagination from '@/components/shared/Pagination'
 
 import { getQuestionsByTagId } from '@/lib/actions/tag.action'
 
-const Page = async ( props: {
+const Page = async (props: {
     params: Promise<{ id: string }>;
     searchParams: Promise<{ [key: string]: string | undefined }>;
-  }) => {
+}) => {
     const searchParams = await props.searchParams;
     const params = await props.params;
-    
+
     const result = await getQuestionsByTagId({
         tagId: params.id,
         page: searchParams.page ? +searchParams.page : 1,

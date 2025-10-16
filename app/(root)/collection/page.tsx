@@ -1,6 +1,6 @@
 import React from 'react'
 
-import QuestionCard from '@/components/cards/QuestionCard'
+import QuestionCard from '@/components/form/cards/QuestionCard'
 import Filter from '@/components/shared/Filter'
 import NoResult from '@/components/shared/NoResult'
 import Pagination from '@/components/shared/Pagination'

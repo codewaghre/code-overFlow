@@ -6,7 +6,7 @@ import { HomePageFilters } from '@/constants/filters';
 import { Button } from "@/components/ui/button";
 import Filter from '@/components/shared/Filter';
 import HomeFilter from '@/components/shared/HomeFilter';
-import QuestionCard from '@/components/cards/QuestionCard';
+import QuestionCard from '@/components/form/cards/QuestionCard';
 import NoResult from '@/components/shared/NoResult';
 import { getQuestion } from '@/lib/actions/question.action';
 import Pagination from '@/components/shared/Pagination';
@@ -14,21 +14,21 @@ import Pagination from '@/components/shared/Pagination';
 
 
 
-const Home = async(props: {
-    params: Promise<{ id: string }>;
-    searchParams: Promise<{ [key: string]: string | undefined }>;
-  }) => {
+const Home = async (props: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | undefined }>;
+}) => {
 
   const searchParams = await props.searchParams;
-  
-   
+
+
   const result = await getQuestion({
     searchQuery: searchParams.q,
     filter: searchParams.filter,
     page: searchParams.page ? +searchParams.page : 1,
   });
 
-  
+
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between  gap-4 sm:flex-row sm:items-center">
@@ -58,11 +58,11 @@ const Home = async(props: {
       </div>
 
       <HomeFilter />
-      
+
       <div className="mt-10 flex w-full flex-col gap-6">
-        {result &&  result.questions.length > 0 ?
+        {result && result.questions.length > 0 ?
           result.questions.map((question) => (
-            <QuestionCard 
+            <QuestionCard
               key={question._id}
               _id={question._id}
               title={question.title}
@@ -71,10 +71,10 @@ const Home = async(props: {
               upvotes={question.upvotes}
               views={question.views}
               answers={question.answers}
-              createdAt={question.createdAt} 
+              createdAt={question.createdAt}
             />
           ))
-          : <NoResult 
+          : <NoResult
             title="There’s no question to show"
             description="Be the first to break the silence! 🚀 Ask a Question and kickstart the discussion. our query could be the next big thing others learn from. Get involved! 💡"
             link="/ask-question"
@@ -82,10 +82,10 @@ const Home = async(props: {
           />}
       </div>
 
-       <div className="mt-10">
-        <Pagination 
+      <div className="mt-10">
+        <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}
-          isNext={ result && result.isNext}
+          isNext={result && result.isNext}
         />
       </div>
 

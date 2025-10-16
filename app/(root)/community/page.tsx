@@ -6,7 +6,7 @@ import { UserFilters } from '@/constants/filters';
 import Filter from '@/components/shared/Filter';
 import { getAllUsers } from '@/lib/actions/users.action';
 import Link from 'next/link';
-import UserCard from '@/components/cards/UserCard';
+import UserCard from '@/components/form/cards/UserCard';
 import Pagination from '@/components/shared/Pagination';
 
 
